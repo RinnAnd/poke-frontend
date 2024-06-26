@@ -1,0 +1,1 @@
+//! This one will have your currently traded pokemons and the option to add more
