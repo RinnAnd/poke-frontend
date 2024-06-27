@@ -1,6 +1,26 @@
 const baseUrl = "http://localhost:1025";
 
 export const useQueries = () => {
+  const signup = async (
+    name: string,
+    username: string,
+    email: string,
+    password: string
+  ) => {
+    try {
+      const response = await fetch(`${baseUrl}/user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, username, email, password }),
+      });
+      return response.json();
+    } catch (error) {
+      return error;
+    }
+  };
+
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch(`${baseUrl}/user/auth`, {
@@ -60,9 +80,9 @@ export const useQueries = () => {
       });
       return response.json();
     } catch (error) {
-      return error
+      return error;
     }
-  }
+  };
 
   const getPokemonsForTrade = async () => {
     try {
@@ -91,6 +111,21 @@ export const useQueries = () => {
     }
   };
 
+  const confirmTrade = async (tradeId: string, accepted: boolean) => {
+    try {
+      const response = await fetch(`${baseUrl}/trades/${tradeId}/confirm`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ accepted }),
+      });
+      return response.json();
+    } catch (error) {
+      return error;
+    }
+  }
+
   const getUserOffers = async (id: string) => {
     try {
       const response = await fetch(`${baseUrl}/trades/offers/${id}`);
@@ -98,16 +133,18 @@ export const useQueries = () => {
     } catch (error) {
       return error;
     }
-  }
+  };
 
   return {
     fetchUserPokemon,
+    signup,
     login,
     addUserPokemon,
     getAllPokemons,
     createTradeOffer,
     getPokemonsForTrade,
     getUserOffers,
+    confirmTrade,
     tradePokemon,
   };
 };

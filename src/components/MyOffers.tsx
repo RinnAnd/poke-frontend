@@ -1,1 +1,0 @@
-//! This will be a modal render of the offers you have received

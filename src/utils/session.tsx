@@ -12,6 +12,8 @@ const SessionCheck: FC = () => {
 
     if (location.pathname === "/" && session.user) {
       navigate("/home");
+    } else if (location.pathname !== "/" && !session.user) {
+      navigate("/");
     }
   }, [navigate, location.pathname]);
 

@@ -57,10 +57,10 @@ const TradeOffer: FC<TradeOfferProps> = ({ close, userId, tradeId }) => {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center">
       <div
-        className="absolute inset-0 backdrop-blur-md z-20"
+        className="fixed inset-0 backdrop-blur-md z-20"
         onClick={close}
       ></div>
-      <div className="w-9/12 h-5/6 bg-gradient-to-b from-black via-zinc-900 to-black border border-zinc-700 rounded-xl z-20 p-8 flex flex-col items-center max-w-[50rem]">
+      <div className="w-9/12 h-5/6 bg-gradient-to-b from-black via-zinc-900 to-black border border-zinc-700 rounded-xl z-20 p-8 flex flex-col items-center max-w-[50rem] justify-around">
         <h1 className="text-3xl font-semibold">Create a trade offer</h1>
         <div className="w-full flex flex-col items-center">
           <h1>Your collection</h1>
@@ -83,17 +83,27 @@ const TradeOffer: FC<TradeOfferProps> = ({ close, userId, tradeId }) => {
           </div>
         </div>
         <div>
-          <p>Choose the Pokémon you want to offer</p>
+          <p className="text-sm text-zinc-500">Choose the Pokémon you want to offer</p>
         </div>
-        {tradeOfferIds.offeredPokemonId && (
-          <p>
-            You selected {nameFormatter(tradeOfferIds.pokemonName)} to offer for
-            trade
-          </p>
-        )}
+        <div className="h-5">
+          {tradeOfferIds.offeredPokemonId && (
+            <p className="text-zinc-500">
+              You selected{" "}
+              <span className="text-emerald-400">
+                {nameFormatter(tradeOfferIds.pokemonName)}
+              </span>{" "}
+              to offer for trade
+            </p>
+          )}
+        </div>
         <div className="w-full flex justify-center gap-6">
           <Button onClick={close}>Cancel</Button>
-          <Button onClick={handleTradeOffer}>Offer trade</Button>
+          <Button
+            onClick={handleTradeOffer}
+            className="bg-zinc-800 hover:bg-zinc-600"
+          >
+            Offer trade
+          </Button>
         </div>
       </div>
     </div>

@@ -20,10 +20,12 @@ import { useQueries } from "@/hooks/useQueries";
 import Pokemon, { PokemonProps } from "@/components/Pokemon";
 import { Button } from "@/components/ui/button";
 import { nameFormatter } from "@/utils/utils";
+import { useNavigate } from "react-router-dom";
 
 interface AllPokemonsProps {}
 
 const AllPokemons: FC<AllPokemonsProps> = () => {
+  const navigate = useNavigate();
   const { getAllPokemons, addUserPokemon } = useQueries();
   const [pokemons, setPokemons] = useState<PokemonProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,6 +37,7 @@ const AllPokemons: FC<AllPokemonsProps> = () => {
   async function fetchPokemons() {
     const pokemons = await getAllPokemons();
     setPokemons(pokemons);
+    console.log(pokemons.length);
   }
 
   async function addPokemon(pokemonId: number) {
@@ -50,6 +53,17 @@ const AllPokemons: FC<AllPokemonsProps> = () => {
     }
   }
 
+  function RedirectButton({ page, text }: { page: string; text: string }) {
+    return (
+      <button
+        className="bg-zinc-800 text-xs rounded-md p-2 hover:bg-zinc-600 transition-all"
+        onClick={() => navigate(page)}
+      >
+        {text}
+      </button>
+    );
+  }
+
   useEffect(() => {
     fetchPokemons();
     /* eslint-disable-next-line */
@@ -62,8 +76,11 @@ const AllPokemons: FC<AllPokemonsProps> = () => {
 
   return (
     <div className="p-10 w-full flex flex-col items-center gap-10">
-      <div className="flex flex-col items-center">
-        <h1 className="text-4xl font-semibold">All Pokémons</h1>
+      <div className="flex flex-col items-center w-full">
+        <div className="w-full relative top-12">
+          <RedirectButton page="/home" text="Home" />
+        </div>
+        <h1 className="text-5xl font-semibold">All Pokémons</h1>
         <p className="text-zinc-500">Choose your next Pokémon!</p>
       </div>
       <div className="flex w-full justify-end mt-[-50px] gap-4">

@@ -4,10 +4,17 @@ import Pokemon from "@/components/Pokemon";
 import { useQueries } from "@/hooks/useQueries";
 import { PokemonProps } from "@/components/Pokemon";
 import { useNavigate } from "react-router-dom";
+import Logout from "@/utils/logout";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface HomeProps {}
 
-interface UserPokemon {
+export interface UserPokemon {
   forTrade: boolean;
   id: string;
   level: number;
@@ -83,8 +90,16 @@ const Home: FC<HomeProps> = () => {
 
   return (
     <div className="p-16 max-w-[2200px] h-screen">
-      <div className="flex gap-2 w-full justify-between">
-        <div className="flex flex-col gap-3">
+      <div className="flex gap-2 w-full justify-between items-center">
+        <div className="flex flex-col items-start gap-2">
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger>
+                <Logout />
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Log out</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <h1 className="text-5xl font-semibold">Hi! {user.username}</h1>
           <p className="text-zinc-500">Welcome back</p>
         </div>
