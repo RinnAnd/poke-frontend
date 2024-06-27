@@ -5,6 +5,7 @@ import Pokemon, { PokemonProps } from "@/components/Pokemon";
 import TradeOffer from "@/components/TradeOffer";
 import { useNavigate } from "react-router-dom";
 import TradePokemons from "@/components/TradePokemons";
+import { OfferResponse } from "./MyOffers";
 
 interface TradeProps {}
 
@@ -30,7 +31,7 @@ interface QueryResponse {
 }
 
 const Trade: FC<TradeProps> = () => {
-  const { getPokemonsForTrade } = useQueries();
+  const { getPokemonsForTrade, getUserOffers } = useQueries();
   const navigate = useNavigate();
 
   const [trades, setTrades] = useState<OpenTrade[]>([]);
@@ -38,6 +39,7 @@ const Trade: FC<TradeProps> = () => {
   const [trade, setTrade] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
   const [tradeId, setTradeId] = useState<string>("");
+  const [currentOffers, setCurrentOffers] = useState<number>(0);
 
   async function fetchPokemons() {
     const pokemons = await getPokemonsForTrade();
@@ -65,6 +67,16 @@ const Trade: FC<TradeProps> = () => {
     }
   }
 
+  async function offersLength() {
+    const user = localStorage.getItem("user");
+    const userId = user ? JSON.parse(user).id : "";
+    const offers = await getUserOffers(userId);
+    const openOffers = offers.filter(
+      (offer: OfferResponse) => offer.status === "pending"
+    );
+    setCurrentOffers(openOffers.length);
+  }
+
   function handleOpenTrade(tradeId: string) {
     setOpenTrade(!openTrade);
     const user = localStorage.getItem("user");
@@ -88,6 +100,7 @@ const Trade: FC<TradeProps> = () => {
 
   useEffect(() => {
     fetchPokemons();
+    offersLength();
     /* eslint-disable-next-line */
   }, []);
 
@@ -105,12 +118,16 @@ const Trade: FC<TradeProps> = () => {
         <div>
           <TradeButton text="Go back" action={() => navigate("/home")} />
         </div>
-        <div className="flex flex-col gap-3">
-          <TradeButton text="Trade my Pokémon" action={() => setTrade(!trade)} />
+        <div className="flex flex-col gap-3 relative">
+          <TradeButton
+            text="Trade my Pokémon"
+            action={() => setTrade(!trade)}
+          />
           <TradeButton
             text="See offers"
             action={() => navigate("/my-offers")}
           />
+          <span className="absolute bottom-[-10px] bg-slate-950 px-2 py-1 rounded-full right-[-10px] text-xs">{currentOffers}</span>
         </div>
       </div>
       <div className="w-full flex items-center justify-center">
@@ -123,7 +140,12 @@ const Trade: FC<TradeProps> = () => {
             <span className="text-xs text-zinc-400 absolute bottom-2">
               Owner: {trade.user}
             </span>
-            <button className="bg-emerald-600 absolute bottom-2 right-1 text-xs rounded-xl p-2 hover:bg-emerald-500 transition-all" onClick={() => handleOpenTrade(trade.id)}>Offer</button>
+            <button
+              className="bg-emerald-600 absolute bottom-2 right-1 text-xs rounded-xl p-2 hover:bg-emerald-500 transition-all"
+              onClick={() => handleOpenTrade(trade.id)}
+            >
+              Offer
+            </button>
           </div>
         ))}
       </div>

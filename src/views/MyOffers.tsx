@@ -16,7 +16,7 @@ export interface UserPokemonWithUser {
   };
 }
 
-interface OfferResponse {
+export interface OfferResponse {
   id: string;
   status: "accepted" | "rejected" | "pending";
   offeredTradePokemon: {
@@ -64,7 +64,7 @@ const MyOffers: FC = () => {
     <div className="flex flex-col p-6 gap-6 justify-center w-full">
       <div className="flex flex-col w-full h-32 justify-center gap-3">
         <div className="w-full">
-          <TradeButton text="Go back" action={() => navigate('/trading')} />
+          <TradeButton text="Go back" action={() => navigate("/trading")} />
         </div>
         <h1 className="text-3xl font-bold text-center">
           Offers you have received
