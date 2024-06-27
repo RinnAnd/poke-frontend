@@ -37,7 +37,6 @@ const AllPokemons: FC<AllPokemonsProps> = () => {
   async function fetchPokemons() {
     const pokemons = await getAllPokemons();
     setPokemons(pokemons);
-    console.log(pokemons.length);
   }
 
   async function addPokemon(pokemonId: number) {

@@ -50,7 +50,6 @@ const TradeOffer: FC<TradeOfferProps> = ({ close, userId, tradeId }) => {
 
   useEffect(() => {
     setPokemons();
-    console.log(tradeOfferIds);
     /* eslint-disable-next-line */
   }, [tradeOfferIds]);
 
